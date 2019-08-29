@@ -5,17 +5,33 @@ import './App.css';
 import { DetalhesPage } from './Pages/detalhes';
 import { NotFound } from './Pages/notfound';
 import { HomePage } from './Pages/home';
+import { string } from 'prop-types';
+
+import { AppBar, Button, Toolbar, Typography, Container } from '@material-ui/core';
+
 
 function App() {
   return (
     <BrowserRouter>
-      <Link to="/">Home</Link>
-      <Link to="/detalhes">Detalhes</Link>
-      <Switch>
-        <Route component={ () => (<HomePage name="Khayan" />) } exact path="/"></Route>
-        <Route component={ DetalhesPage } path = "/detalhes"></Route>
-        <Route component={ NotFound }></Route>
-      </Switch>
+      <AppBar position="sticky">
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">
+            <Typography variant="h6">Home</Typography>
+          </Button>
+          
+          <Button color="inherit" component={Link} to="/detalhes">
+            <Typography variant="h6">Detalhes</Typography>
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      <Container>
+        <Switch>
+          <Route component={ () => (<HomePage name="Khayan" />) } exact path="/"></Route>
+          <Route component={ DetalhesPage } path = "/detalhes"></Route>
+          <Route component={ NotFound }></Route>
+        </Switch>
+      </Container>
     </BrowserRouter>
   );
 }

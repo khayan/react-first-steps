@@ -1,22 +1,53 @@
-import React from 'react';
-import logo from '../logo.svg';
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 
-export function HomePage(props) {
-    return(
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <h1>Hello, {props.name}.</h1>
-                <p>Edit <code>src/App.js</code> and save to reload.</p>
-                <a
-                className="App-link"
-                href="https://reactjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                Learn React
-                </a>
-            </header>
-        </div>
-    )
+function Digimon(props) {
+    return (
+        <Card elevation={2} style={ {display: 'inline-block', margin: 'auto', width: '20%'} } >
+            <CardContent>
+                <CardMedia component={'img'} src={props.img} alt={`Imagem do Digimon ${props.name}`} />
+                <Typography gutterBottom variant="h5">{props.name}</Typography>
+                <Typography variant="body2" color="textSecondary">Level: {props.level}</Typography>
+            </CardContent>
+        </Card>
+    );
+};
+
+export function HomePage() {
+
+    const [data, setData] = useState([]);
+    console.log("Data antes do useEffect: ", data);
+
+
+    useEffect(function() {
+        fetch('https://digimon-api.herokuapp.com/api/digimon')
+        .then(function(response){
+          return response.json();
+        })
+        .then(function(response) {
+          console.log("Resultado da requisição: ", response);
+          setData(response);
+        })
+        .catch(function(error){
+          console.error(error);
+        });
+      },[]);
+
+    if (data.length > 0) {
+        return (
+            /*<Digimon
+                id={data[0].id}
+                name={data[0].name}
+                img={data[0].img}
+                level={data[0].level}
+            />*/
+            <div>
+                {data.map(function(digimon) {
+                    return <Digimon key={digimon.name} {...digimon} />
+                })}
+            </div>
+        );
+    } else {
+        return <p>Carregando...</p>
+    }
 };
